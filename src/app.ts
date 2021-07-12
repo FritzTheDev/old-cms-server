@@ -20,7 +20,10 @@ export class Server {
 
   /** starts the app listening for requests on the port set by the PORT environment variable or 3000 if that's undefined. */
   public listen(): void {
-    this.app.listen(process.env.PORT || 3000);
+    this.app.listen(process.env.PORT || 4200);
+    
+    // eslint-disable-next-line no-console
+    console.info(`Listening on ${process.env.PORT || 4200}`);
   }
 
   /** Configures the global middleware that needs to be applied to every incoming request
