@@ -6,9 +6,8 @@
  */
 
 import { Server } from './app';
-
 /** Bootstraps the app by connecting to the database & creating a server object, then starts it listening. */
-const main = () => {
+const main = (): void => {
   const app = new Server([]);
   app.listen();
 };
