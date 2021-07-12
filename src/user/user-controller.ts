@@ -24,10 +24,12 @@ export class UserController implements Controller {
     this.configureRoutes();
   }
 
+  /** Configures the actual routes & middleware associated with the controller. */
   private configureRoutes() {
     this.router.get('/', this.handleGetAllUsers);
   }
 
+  /** handles the "GET all" request */
   private handleGetAllUsers = async (_req: Request, res: Response, next: NextFunction) => {
     try {
       const allUsers = await this.userService.getAllUsers();
