@@ -35,6 +35,8 @@ module.exports = {
     '@typescript-eslint/no-use-before-define': ['error', { functions: false, classes: true, variables: true, typedefs: true }],
     // I prefer bootstrapping via a floating promise.
     '@typescript-eslint/no-floating-promises': 'off',
+    // I prefer bootstrapping via a floating promise.
+    '@typescript-eslint/no-misused-promises': 'off',
     // Common abbreviations are known and readable
     'unicorn/prevent-abbreviations': 'off',
     // Airbnb prefers forEach
