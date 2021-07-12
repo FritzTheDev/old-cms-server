@@ -7,11 +7,6 @@
 
 import 'dotenv/config';
 import { Server } from './app';
+import { UserController } from './user/user-controller';
 
-/** Bootstraps the app by connecting to the database & creating a server object, then starts it listening. */
-const main = (): void => {
-  const app = new Server([]);
-  app.listen();
-};
-
-main();
+new Server([new UserController()]).listen();
