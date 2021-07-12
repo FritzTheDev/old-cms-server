@@ -6,3 +6,5 @@ node_modules
 .env
 # Build Directory
 dist/
+# Yarn Logging Output
+yarn-error.log
