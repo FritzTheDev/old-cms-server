@@ -5,6 +5,7 @@
  * Description: app.ts is where every part of the app (except database config) gets tied together & ready to start listening.
  */
 import cors from 'cors';
+import rateLimit from 'express-rate-limit';
 import Express, { Application, json } from 'express';
 import { Controller } from './interfaces/controller-interface';
 import { errorHandlingMiddleware } from './middleware/error-handling-middleware';
@@ -19,10 +20,9 @@ export class Server {
     this.configureErrorHandling();
   }
 
-  /** starts the app listening for requests on the port set by the PORT environment variable or 3000 if that's undefined. */
+  /** Starts the app listening for requests on the port set by the PORT environment variable or 4200 if that's undefined. */
   public listen(): void {
     this.app.listen(process.env.PORT || 4200);
-
     // eslint-disable-next-line no-console
     console.info(`Listening on ${process.env.PORT || 4200}`);
   }
@@ -31,23 +31,27 @@ export class Server {
    * Includes:
    * - Cross Origin Request Sharing via `cors`
    * - JSON body parsing (bundled with Express but the API matches `body-parser`'s JSON method )
-   *
+   * - Rate Limiting via express-rate-limit
    */
-  private configureGlobalMiddleware() {
+  private configureGlobalMiddleware(): void {
+    // Enabled for ELB / Heroku Reverse Proxy support with rate limit
+    this.app.set('trust proxy', 1);
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-call
+    this.app.use(rateLimit({ windowMs: 15 * 60 * 1000, max: 100 }));
     // This checks if the app is running in prod. If it is, it requires the client's origin to be set.
     this.app.use(cors({ origin: process.env.NODE_ENV === 'production' ? process.env.CLIENT_ORIGIN : '*' }));
     this.app.use(json());
   }
 
   /** Configures the express app to use controllers that handle incoming requests. */
-  private configureControllers(controllers: Controller[]) {
+  private configureControllers(controllers: Controller[]): void {
     controllers.forEach((controller) => {
       this.app.use(controller.path, controller.router);
     });
   }
 
   /** Adds error handling middleware on a global basis. */
-  private configureErrorHandling() {
+  private configureErrorHandling(): void {
     this.app.use(errorHandlingMiddleware);
   }
 }
