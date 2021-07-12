@@ -16,4 +16,9 @@ export class UserService {
   async getAllUsers(): Promise<User[]> {
     return this.db.user.findMany();
   }
+
+  /** Returns a promise with an array of a single user that matches the given ID */
+  async getOneUser(id: number): Promise<User> {
+    return this.db.user.findUnique({ where: { id } });
+  }
 }
