@@ -5,6 +5,7 @@
  * Description: Entry point for the app that creates a database connection & starts the express server listening.
  */
 
+import 'dotenv/config';
 import { Server } from './app';
 /** Bootstraps the app by connecting to the database & creating a server object, then starts it listening. */
 const main = (): void => {
