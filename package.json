@@ -32,7 +32,8 @@
     "eslint-plugin-unicorn": "^34.0.1",
     "husky": ">=6",
     "jest": "^27.0.6",
-    "lint-staged": ">=10"
+    "lint-staged": ">=10",
+    "prisma": "^2.26.0"
   },
   "lint-staged": {
     "*.ts": "eslint --cache --fix"
