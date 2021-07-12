@@ -4,7 +4,7 @@
  * Last Edited: 7/12/21
  * Description: app.ts is where every part of the app (except database config) gets tied together & ready to start listening.
  */
-import CORS from 'cors';
+import cors from 'cors';
 import Express, { Application, json } from 'express';
 import { Controller } from './interfaces/controller-interface';
 import { errorHandlingMiddleware } from './middleware/error-handling-middleware';
@@ -31,7 +31,7 @@ export class Server {
    */
   private configureGlobalMiddleware() {
     // This checks if the app is running in prod. If it is, it requires the client's origin to be set.
-    this.app.use(CORS({ origin: process.env.NODE_ENV === 'production' ? process.env.CLIENT_ORIGIN : '*' }));
+    this.app.use(cors({ origin: process.env.NODE_ENV === 'production' ? process.env.CLIENT_ORIGIN : '*' }));
     this.app.use(json());
   }
 
