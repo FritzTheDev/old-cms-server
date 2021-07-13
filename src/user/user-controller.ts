@@ -1,10 +1,9 @@
 /**
  * Filename: user/user-controller.ts
  * Last Editor: Frederick Johnson (FritzTheDev)
- * Last Edited: 7/12/21
+ * Last Edited: 7/13/21
  * Description: Handles routing & controller logic for users.
  */
-
 import { NextFunction, Request, Response, Router } from 'express';
 import { CreateUserDTO } from './create-user-dto';
 import { validationMiddleware } from '../middleware/validation-middleware';
