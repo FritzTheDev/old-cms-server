@@ -3,7 +3,7 @@ export class HttpException extends Error {
 
   public message: string;
 
-  constructor(status: number, message: string) {
+  constructor(status = 500, message = 'An unknown error occured. Contact Support') {
     super(message);
     this.status = status;
     this.message = message;
