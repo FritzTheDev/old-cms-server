@@ -1,9 +1,3 @@
-/**
- * Filename: user/user-service.ts
- * Last Editor: Frederick Johnson (FritzTheDev)
- * Last Edited: 7/13/21
- * Description: Handles database queries & business logic, primarily from the user controller.
- */
 import { User, Prisma } from '@prisma/client';
 import { hash } from 'bcrypt';
 import { prisma } from '../database/prisma';
