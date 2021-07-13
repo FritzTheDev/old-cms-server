@@ -1,21 +1,11 @@
-/**
- * Filename: middleware/validation-middleware.ts
- * Last Editor: Frederick Johnson (FritzTheDev)
- * Last Edited: 7/12/21s
- * Description: Request Body Validation Middleware
- */
-
 import { RequestHandler } from 'express';
 import { ClassConstructor, plainToClass } from 'class-transformer';
 import { validate, ValidationError } from 'class-validator';
 import { HttpException } from '../exceptions/http-exception';
-import { CreateUserDTO } from '../user/create-user-dto';
-
-/** Not an ideal replacement for a truly generic solution but I've wasted a bunch of time on this. */
-type Dto = CreateUserDTO;
+import { DTO } from '../interfaces/dto-interface';
 
 /** Validates request bodies to ensure validity */
-export const validationMiddleware = (dto: ClassConstructor<Dto>, skipMissingProperties = false): RequestHandler =>
+export const validationMiddleware = (dto: ClassConstructor<DTO>, skipMissingProperties = false): RequestHandler =>
   async function validateRequest(req, _res, next) {
     const constructedObject = plainToClass(dto, req.body);
     const errors = await validate(constructedObject, { skipMissingProperties });

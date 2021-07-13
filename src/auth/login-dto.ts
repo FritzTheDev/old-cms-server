@@ -2,10 +2,7 @@ import { IsEmail, Length } from 'class-validator';
 import { DTO } from '../interfaces/dto-interface';
 
 /** Defines what incoming "Create User" requests should look like */
-export class CreateUserDTO extends DTO {
-  @Length(3, 10)
-  username: string;
-
+export class LoginDTO extends DTO {
   @Length(8, 255)
   password: string;
 
