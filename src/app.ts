@@ -1,9 +1,3 @@
-/**
- * Filename: app.ts
- * Last Editor: Frederick Johnson (FritzTheDev)
- * Last Edited: 7/12/21
- * Description: app.ts is where every part of the app (except database config) gets tied together & ready to start listening.
- */
 import cors from 'cors';
 import rateLimit from 'express-rate-limit';
 import Express, { Application, json } from 'express';
