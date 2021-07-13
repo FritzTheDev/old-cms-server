@@ -4,9 +4,10 @@
  * Last Edited: 7/12/21
  * Description: Handles database queries & business logic, primarily from the user controller.
  */
-import { User } from '@prisma/client';
+import { User, Prisma } from '@prisma/client';
 import { prisma } from '../database/prisma';
 import { CreateUserDTO } from './user-dtos';
+import { HttpException } from '../exceptions/http-exception';
 
 /** Handles database queries & business logic - these instance methods get called from controllers. */
 export class UserService {
@@ -25,6 +26,14 @@ export class UserService {
 
   /** Creates a user & returns a promise with that user */
   async createUser(data: CreateUserDTO): Promise<User> {
-    return this.db.user.create({ data })
+    let user;
+    try {
+      user = await this.db.user.create({ data });
+    } catch (error) {
+      throw error instanceof Prisma.PrismaClientKnownRequestError && error.code === 'P2002' // "Unique Constraint Violated" Error Code
+        ? new HttpException(400, 'Error: This email and/or username are already taken.')
+        : new HttpException();
+    }
+    return user;
   }
 }
