@@ -6,7 +6,7 @@
  */
 
 import { NextFunction, Request, Response, Router } from 'express';
-import { CreateUserDTO } from './user-dtos';
+import { CreateUserDTO } from './create-user-dto';
 import { validationMiddleware } from '../middleware/validation-middleware';
 import { UserService } from './user-service';
 import { Controller } from '../interfaces/controller-interface';

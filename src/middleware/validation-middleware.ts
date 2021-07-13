@@ -9,7 +9,7 @@ import { RequestHandler } from 'express';
 import { ClassConstructor, plainToClass } from 'class-transformer';
 import { validate, ValidationError } from 'class-validator';
 import { HttpException } from '../exceptions/http-exception';
-import { CreateUserDTO } from '../user/user-dtos';
+import { CreateUserDTO } from '../user/create-user-dto';
 
 /** Not an ideal replacement for a truly generic solution but I've wasted a bunch of time on this. */
 type Dto = CreateUserDTO;

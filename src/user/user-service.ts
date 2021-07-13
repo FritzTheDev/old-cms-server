@@ -7,7 +7,7 @@
 import { User, Prisma } from '@prisma/client';
 import { hash } from 'bcrypt';
 import { prisma } from '../database/prisma';
-import { CreateUserDTO } from './user-dtos';
+import { CreateUserDTO } from './create-user-dto';
 import { HttpException } from '../exceptions/http-exception';
 
 /** Handles database queries & business logic - these instance methods get called from controllers. */
