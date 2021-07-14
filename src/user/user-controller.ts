@@ -53,7 +53,11 @@ export class UserController implements Controller {
   };
 
   /** handles "GET all users" requests */
-  private handleCreateUser = async (req: Request, res: Response, next: NextFunction) => {
+  private handleCreateUser = async (
+    req: Request<Record<string, never>, Record<string, never>, CreateUserDTO>,
+    res: Response,
+    next: NextFunction
+  ) => {
     try {
       const createdUser = await this.userService.createUser(req.body);
       res.status(200).json(createdUser);

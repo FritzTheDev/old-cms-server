@@ -11,12 +11,14 @@ export class UserService {
 
   /** Returns a promise with an array of every user in the database */
   async getAllUsers(): Promise<User[]> {
-    return this.db.user.findMany();
+    const users = await this.db.user.findMany();
+    return users.map((user) => ({ ...user, password: undefined }));
   }
 
   /** Returns a promise with an array of a single user that matches the given ID */
   async getOneUser(id: number): Promise<User> {
-    return this.db.user.findUnique({ where: { id } });
+    const user = await this.db.user.findUnique({ where: { id } });
+    return { ...user, password: undefined };
   }
 
   /** Creates a user & returns a promise with that user */
@@ -31,6 +33,6 @@ export class UserService {
         ? new HttpException(400, 'Error: This email and/or username are already taken.')
         : new HttpException();
     }
-    return createdUser;
+    return { ...createdUser, password: undefined };
   }
 }
