@@ -1,6 +1,7 @@
 import cors from 'cors';
 import rateLimit from 'express-rate-limit';
 import Express, { Application, json } from 'express';
+import passport from 'passport';
 import { Controller } from './interfaces/controller-interface';
 import { errorHandlingMiddleware } from './middleware/error-handling-middleware';
 
@@ -28,6 +29,8 @@ export class Server {
    * - Rate Limiting via express-rate-limit
    */
   private configureGlobalMiddleware(): void {
+    // Passport
+    this.app.use(passport.initialize());
     // Enabled for ELB / Heroku Reverse Proxy support with rate limit
     this.app.set('trust proxy', 1);
     // eslint-disable-next-line @typescript-eslint/no-unsafe-call

@@ -1,6 +1,4 @@
 import { NextFunction, Request, Response, Router } from 'express';
-import { CreateUserDTO } from './create-user-dto';
-import { validationMiddleware } from '../middleware/validation-middleware';
 import { UserService } from './user-service';
 import { Controller } from '../interfaces/controller-interface';
 import { ResourceNotFoundException } from '../exceptions/resource-not-found-exception';
@@ -23,7 +21,6 @@ export class UserController implements Controller {
   /** Configures the actual routes & middleware associated with the controller. */
   private configureRoutes() {
     this.router.get('/', this.handleGetAllUsers);
-    this.router.post('/', validationMiddleware(CreateUserDTO), this.handleCreateUser);
     this.router.get('/:id', this.handleGetOneUser);
   }
 
@@ -47,20 +44,6 @@ export class UserController implements Controller {
       const foundUser = await this.userService.getOneUser(Number(req.params.id));
       if (!foundUser) throw new ResourceNotFoundException('user', req.params.id);
       res.status(200).json(foundUser);
-    } catch (error) {
-      next(error);
-    }
-  };
-
-  /** handles "GET all users" requests */
-  private handleCreateUser = async (
-    req: Request<Record<string, never>, Record<string, never>, CreateUserDTO>,
-    res: Response,
-    next: NextFunction
-  ) => {
-    try {
-      const createdUser = await this.userService.createUser(req.body);
-      res.status(200).json(createdUser);
     } catch (error) {
       next(error);
     }

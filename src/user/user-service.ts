@@ -1,8 +1,5 @@
-import { User, Prisma } from '@prisma/client';
-import { hash } from 'bcrypt';
+import { User } from '@prisma/client';
 import { prisma } from '../database/prisma';
-import { CreateUserDTO } from './create-user-dto';
-import { HttpException } from '../exceptions/http-exception';
 
 /** Handles database queries & business logic - these instance methods get called from controllers. */
 export class UserService {
@@ -19,20 +16,5 @@ export class UserService {
   async getOneUser(id: number): Promise<User> {
     const user = await this.db.user.findUnique({ where: { id } });
     return { ...user, password: undefined };
-  }
-
-  /** Creates a user & returns a promise with that user */
-  async createUser(data: CreateUserDTO): Promise<User> {
-    let createdUser;
-    try {
-      const password = await hash(data.password, 10);
-      const hashedData: CreateUserDTO = { ...data, password };
-      createdUser = await this.db.user.create({ data: hashedData });
-    } catch (error) {
-      throw error instanceof Prisma.PrismaClientKnownRequestError && error.code === 'P2002' // "Unique Constraint Violated" Error Code
-        ? new HttpException(400, 'Error: This email and/or username are already taken.')
-        : new HttpException();
-    }
-    return { ...createdUser, password: undefined };
   }
 }
