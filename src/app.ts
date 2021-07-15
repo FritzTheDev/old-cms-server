@@ -29,14 +29,14 @@ export class Server {
    * - Rate Limiting via express-rate-limit
    */
   private configureGlobalMiddleware(): void {
+    // This checks if the app is running in prod. If it is, it requires the client's origin to be set.
+    this.app.use("*", cors({ origin: process.env.NODE_ENV === 'production' ? process.env.CLIENT_ORIGIN : '*' }));
     // Passport
     this.app.use(passport.initialize());
     // Enabled for ELB / Heroku Reverse Proxy support with rate limit
     this.app.set('trust proxy', 1);
     // eslint-disable-next-line @typescript-eslint/no-unsafe-call
     this.app.use(rateLimit({ windowMs: 15 * 60 * 1000, max: 100 }));
-    // This checks if the app is running in prod. If it is, it requires the client's origin to be set.
-    this.app.use(cors({ origin: process.env.NODE_ENV === 'production' ? process.env.CLIENT_ORIGIN : '*' }));
     this.app.use(json());
   }
 
