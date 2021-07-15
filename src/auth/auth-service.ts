@@ -16,21 +16,23 @@ export class AuthService {
     const validPassword = await compare(password, user.password);
     if (!validPassword) throw new InvalidCredentialException();
     const token = sign({ id: user.id }, process.env.JWT_SECRET);
-    return { token, user };
+    return { token, user: { ...user, password: undefined } };
   }
 
   /** Creates a user & returns a promise with that user */
-  async createUser(data: RegisterDTO): Promise<User> {
+  async createUser(data: RegisterDTO): Promise<{ user: User; token: string }> {
     let createdUser;
+    let token;
     try {
       const password = await hash(data.password, 10);
       const hashedData: RegisterDTO = { ...data, password };
       createdUser = await this.db.user.create({ data: hashedData });
+      token = sign({ id: createdUser.id }, process.env.JWT_SECRET);
+      return { token, user: { ...createdUser, password: undefined } };
     } catch (error) {
       throw error instanceof Prisma.PrismaClientKnownRequestError && error.code === 'P2002' // "Unique Constraint Violated" Error Code
-        ? new HttpException(400, 'Error: This email and/or username are already taken.')
+        ? new HttpException(400, 'Error: This email is already taken.')
         : new HttpException();
     }
-    return { ...createdUser, password: undefined };
   }
 }
