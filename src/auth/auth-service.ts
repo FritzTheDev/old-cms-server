@@ -12,7 +12,6 @@ export class AuthService {
   private db = prisma;
 
   public async login({ email, password }: LoginDTO): Promise<{ user: User; token: string }> {
-    console.log(email);
     const user = await this.db.user.findUnique({ where: { email }, rejectOnNotFound: true });
     const validPassword = await compare(password, user.password);
     if (!validPassword) throw new InvalidCredentialException();
